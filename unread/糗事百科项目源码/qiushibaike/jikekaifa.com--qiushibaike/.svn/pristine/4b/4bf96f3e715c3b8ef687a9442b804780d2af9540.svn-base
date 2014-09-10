@@ -1,0 +1,18 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.webkit.WebView;
+
+public class AboutActivity extends Activity{
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.setting_guanyu);
+		WebView web = (WebView) findViewById(R.id.webView1);
+		web.loadUrl("file:///android_asset/about.html");
+	}
+
+}

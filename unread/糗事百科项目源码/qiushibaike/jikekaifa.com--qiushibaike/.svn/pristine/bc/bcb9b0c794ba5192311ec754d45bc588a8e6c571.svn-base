@@ -1,0 +1,315 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.anjoyo.adapter.DetailListAdapter;
+import com.anjoyo.info.AshamedInfo;
+import com.anjoyo.info.CommentsInfo;
+import com.anjoyo.model.Model;
+import com.anjoyo.myview.MyDetailsListView;
+import com.anjoyo.net.ThreadPoolUtils;
+import com.anjoyo.thread.HttpGetThread;
+import com.anjoyo.utils.LoadImg;
+import com.anjoyo.utils.LoadImg.ImageDownloadCallBack;
+import com.anjoyo.utils.MyJson;
+
+public class AshamedDetailActivity extends Activity {
+
+	private AshamedInfo info = null;
+	private LoadImg loadImg;// 加载图片
+	private MyJson myJson = new MyJson();
+	private ImageView Detail_Back, Detail_SenComment;// 返回和发评论---按钮
+	private TextView Detail_AshameID;// 显示糗事ID
+	private ImageView Detail_UserHead;// 用户头像---按钮-发小纸条
+	private TextView Detail_UserName;// 用户名
+	private TextView Detail_MainText;// 糗事文字
+	private ImageView Detail_MainImg;// 糗事图片---按钮-加载糗事大图
+	private LinearLayout Detail_Up;// 点赞---按钮
+	private ImageView Detail_Up_Img;// 赞图片
+	private TextView Detail_Up_text;// 被赞次数
+	private LinearLayout Detail_Down;// 点踩---按钮
+	private ImageView Detail_Down_Img;// 踩图片
+	private TextView Detail_Down_text;// 被踩次数
+	private TextView Detail_ShareNum;// 被分享的次数
+	private LinearLayout Detail_Share;// 点击分享---按钮
+	private ImageView Detail_Share_Img;// 分享图片
+	private MyDetailsListView Detail_List;// 评论列表
+	private LinearLayout Detail__progressBar;// 加载状态
+	private TextView Detail_CommentsNum;// 暂无评论显示出来
+	private int commentsFlag = 0;
+	private boolean upFlag = false;
+	private boolean downFlag = false;
+	// 网络交互请求返回数据
+	private List<CommentsInfo> list = new ArrayList<CommentsInfo>();
+	private DetailListAdapter mAdapter = null;//
+	private Button ListBottem = null;
+	private int mStart = 0;
+	private int mEnd = 5;
+	private String url = null;
+	private boolean flag = true;
+	private boolean listBottemFlag = true;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_ashamed_detail);
+		// 获取从列表当中传递过来的数据
+		Intent intent = getIntent();
+		Bundle bund = intent.getBundleExtra("value");
+		info = (AshamedInfo) bund.getSerializable("AshamedInfo");
+		// 初始化图片异步加载类
+		loadImg = new LoadImg(AshamedDetailActivity.this);
+		initView();
+		addInformation();
+		// 添加商铺的图片的方法
+		addImg();
+
+		mAdapter = new DetailListAdapter(AshamedDetailActivity.this, list);
+		ListBottem = new Button(AshamedDetailActivity.this);
+		ListBottem.setText("点击加载更多");
+		ListBottem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (flag && listBottemFlag) {
+					url = Model.COMMENTS + "qid=" + info.getQid() + "&start="
+							+ mStart + "&end=" + mEnd;
+					ThreadPoolUtils.execute(new HttpGetThread(hand, url));
+					listBottemFlag = false;
+				} else if (!listBottemFlag)
+					Toast.makeText(AshamedDetailActivity.this, "加载中请稍候", 1)
+							.show();
+			}
+		});
+		Detail_List.addFooterView(ListBottem, null, false);
+		ListBottem.setVisibility(View.GONE);
+		Detail_List.setAdapter(mAdapter);
+		String endParames = Model.COMMENTS + "qid=" + info.getQid() + "&start="
+				+ mStart + "&end=" + mEnd;
+		ThreadPoolUtils.execute(new HttpGetThread(hand, endParames));
+	}
+
+	private void initView() {
+		MyOnClickListner myOnclick = new MyOnClickListner();
+		Detail_Back = (ImageView) findViewById(R.id.Detail_Back);
+		Detail_SenComment = (ImageView) findViewById(R.id.Detail_SenComment);
+		Detail_AshameID = (TextView) findViewById(R.id.Detail_AshameID);
+		Detail_UserHead = (ImageView) findViewById(R.id.Detail_UserHead);
+		Detail_UserName = (TextView) findViewById(R.id.Detail_UserName);
+		Detail_MainText = (TextView) findViewById(R.id.Detail_MainText);
+		Detail_MainImg = (ImageView) findViewById(R.id.Detail_MainImg);
+		Detail_Up = (LinearLayout) findViewById(R.id.Detail_Up);
+		Detail_Up_Img = (ImageView) findViewById(R.id.Detail_Up_Img);
+		Detail_Up_text = (TextView) findViewById(R.id.Detail_Up_text);
+		Detail_Down = (LinearLayout) findViewById(R.id.Detail_Down);
+		Detail_Down_Img = (ImageView) findViewById(R.id.Detail_Down_Img);
+		Detail_Down_text = (TextView) findViewById(R.id.Detail_Down_text);
+		Detail_ShareNum = (TextView) findViewById(R.id.Detail_ShareNum);
+		Detail_Share = (LinearLayout) findViewById(R.id.Detail_Share);
+		Detail_Share_Img = (ImageView) findViewById(R.id.Detail_Share_Img);
+		Detail_List = (MyDetailsListView) findViewById(R.id.Detail_List);
+		Detail__progressBar = (LinearLayout) findViewById(R.id.Detail__progressBar);
+		Detail_CommentsNum = (TextView) findViewById(R.id.Detail_CommentsNum);
+		Detail_Back.setOnClickListener(myOnclick);
+		Detail_SenComment.setOnClickListener(myOnclick);
+		Detail_UserHead.setOnClickListener(myOnclick);
+		Detail_MainImg.setOnClickListener(myOnclick);
+		Detail_Up.setOnClickListener(myOnclick);
+		Detail_Down.setOnClickListener(myOnclick);
+		Detail_Share.setOnClickListener(myOnclick);
+	}
+
+	// 点击事件的监听响应
+	private class MyOnClickListner implements View.OnClickListener {
+		public void onClick(View arg0) {
+			int mID = arg0.getId();
+			switch (mID) {
+			case R.id.Detail_Back:// 返回按钮
+				AshamedDetailActivity.this.finish();
+				break;
+			case R.id.Detail_SenComment:// 发评论
+				Intent intent = new Intent(AshamedDetailActivity.this,
+						SendCommentActivity.class);
+				Bundle bund = new Bundle();
+				bund.putSerializable("AshamedInfo", info);
+				intent.putExtra("value", bund);
+				startActivity(intent);
+				break;
+			case R.id.Detail_UserHead:// 发小纸条
+				Toast.makeText(AshamedDetailActivity.this, "发小纸条被单击", 1).show();
+				break;
+			case R.id.Detail_MainImg:// 查看大图
+				Toast.makeText(AshamedDetailActivity.this, "查看大图被单击", 1).show();
+				break;
+			case R.id.Detail_Up:// 点赞
+				downFlag = false;
+				upFlag = true;
+				upOrDown();
+				break;
+			case R.id.Detail_Down:// 点踩
+				upFlag = false;
+				downFlag = true;
+				upOrDown();
+				break;
+			case R.id.Detail_Share:// 分享
+				info.setQshare(String.valueOf(Integer.parseInt(info.getQshare()) + 1));
+				Detail_ShareNum.setText(String.valueOf(info.getQshare()));
+				Toast.makeText(AshamedDetailActivity.this, "分享被单击", 1).show();
+				break;
+			default:
+				break;
+			}
+		}
+
+		// 点赞或点踩
+		private void upOrDown() {
+			String upNum = info.getQlike();
+			String downNum = info.getQunlike();
+			int num1 = Integer.parseInt(upNum);
+			int num2 = Integer.parseInt(downNum);
+			Detail_Up.setBackgroundResource(R.drawable.button_vote_enable);
+			Detail_Up_Img.setImageResource(R.drawable.icon_for_enable);
+			Detail_Up_text.setTextColor(Color.parseColor("#815F3D"));
+			Detail_Down.setBackgroundResource(R.drawable.button_vote_enable);
+			Detail_Down_Img.setImageResource(R.drawable.icon_against_enable);
+			Detail_Down_text.setTextColor(Color.parseColor("#815F3D"));
+
+			if (upFlag) {
+				Detail_Up.setBackgroundResource(R.drawable.button_vote_active);
+				Detail_Up_Img.setImageResource(R.drawable.icon_for_active);
+				Detail_Up_text.setTextColor(Color.RED);
+				if (commentsFlag == 0) {
+					upNum = String.valueOf(num1 + 1);
+					commentsFlag = 1;
+				} else if (commentsFlag == 2) {
+					upNum = String.valueOf(num1 + 1);
+					downNum = String.valueOf(num2 - 1);
+					commentsFlag = 1;
+				}
+			} else if (downFlag) {
+				Detail_Down
+						.setBackgroundResource(R.drawable.button_vote_active);
+				Detail_Down_Img
+						.setImageResource(R.drawable.icon_against_active);
+				Detail_Down_text.setTextColor(Color.RED);
+				if (commentsFlag == 0) {
+					downNum = String.valueOf(num2 + 1);
+					commentsFlag = 2;
+				} else if (commentsFlag == 1) {
+					downNum = String.valueOf(num2 + 1);
+					upNum = String.valueOf(num1 - 1);
+					commentsFlag = 2;
+				}
+			}
+			info.setQlike(upNum);
+			info.setQunlike(downNum);
+			Detail_Up_text.setText(upNum);
+			if (!downNum.endsWith("0")) {
+				Detail_Down_text.setText("-" + downNum);
+			} else {
+				Detail_Down_text.setText(downNum);
+			}
+		}
+	}
+
+	// 线程返回信息
+	@SuppressLint("HandlerLeak")
+	Handler hand = new Handler() {
+
+		public void handleMessage(android.os.Message msg) {
+			super.handleMessage(msg);
+			if (msg.what == 404) {
+				Toast.makeText(AshamedDetailActivity.this, "找不到地址", 1).show();
+				listBottemFlag = true;
+			} else if (msg.what == 100) {
+				Toast.makeText(AshamedDetailActivity.this, "传输失败", 1).show();
+				listBottemFlag = true;
+			} else if (msg.what == 200) {
+				String result = (String) msg.obj;
+				// 在activity当中获取网络交互的数据
+				if (result != null) {
+					// 1次网络请求返回的数据
+					List<CommentsInfo> newList = myJson
+							.getAhamedCommentsList(result);
+					if (newList != null) {
+						if (newList.size() == 5) {
+							Detail_List.setVisibility(View.VISIBLE);
+							ListBottem.setVisibility(View.VISIBLE);
+							mStart += 5;
+							mEnd += 5;
+						} else if (newList.size() == 0) {
+							Detail_CommentsNum.setVisibility(View.VISIBLE);
+						} else {
+							Detail_List.setVisibility(View.VISIBLE);
+							ListBottem.setVisibility(View.GONE);
+						}
+						for (CommentsInfo info : newList) {
+							list.add(info);
+						}
+						listBottemFlag = true;
+					} else {
+						Detail_CommentsNum.setVisibility(View.VISIBLE);
+					}
+				}
+				// mLinearLayout.setVisibility(View.VISIBLE);
+				// load_progressBar.setVisibility(View.GONE);
+				Detail__progressBar.setVisibility(View.GONE);
+				mAdapter.notifyDataSetChanged();
+			}
+		};
+
+	};
+
+	// 加载用户头像图片和糗事详情图片
+	private void addImg() {
+		Detail_UserHead.setTag(Model.USERHEADURL + info.getUhead());
+		Bitmap bit = loadImg.loadImage(Detail_UserHead, Model.USERHEADURL
+				+ info.getUhead(), new ImageDownloadCallBack() {
+			public void onImageDownload(ImageView imageView, Bitmap bitmap) {
+				// 不需要按照tag查找图片，不存在img复用问题
+				Detail_UserHead.setImageBitmap(bitmap);
+			}
+		});
+		if (bit != null) {
+			Detail_UserHead.setImageBitmap(bit);
+		}
+		Detail_MainImg.setTag(Model.QIMGURL + info.getQimg());
+		bit = loadImg.loadImage(Detail_MainImg, Model.QIMGURL + info.getQimg(),
+				new ImageDownloadCallBack() {
+					public void onImageDownload(ImageView imageView,
+							Bitmap bitmap) {
+						// 不需要按照tag查找图片，不存在img复用问题
+						Detail_MainImg.setImageBitmap(bitmap);
+					}
+				});
+		if (bit != null) {
+			Detail_MainImg.setImageBitmap(bit);
+		}
+	}
+
+	// 添加糗事详细信息
+	private void addInformation() {
+		Detail_AshameID.setText("糗事" + info.getQid());// 显示糗事ID
+		Detail_UserName.setText(info.getUname());// 用户名
+		Detail_MainText.setText(info.getQvalue());// 糗事文字
+		Detail_Up_text.setText(info.getQlike());// 被赞次数
+		Detail_Down_text.setText("-" + info.getQunlike());// 被踩次数
+		Detail_ShareNum.setText(info.getQshare());// 被分享的次数
+	}
+}

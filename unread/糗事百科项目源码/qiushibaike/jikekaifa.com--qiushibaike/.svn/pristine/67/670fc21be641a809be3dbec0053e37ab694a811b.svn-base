@@ -1,0 +1,204 @@
+
+
+
+package com.anjoyo.adapter;
+
+import java.util.List;
+
+import com.anjoyo.anjoyoqiushibaike.R;
+import com.anjoyo.info.AshamedInfo;
+import com.anjoyo.model.Model;
+import com.anjoyo.utils.LoadImg;
+import com.anjoyo.utils.LoadImg.ImageDownloadCallBack;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class MyListAdapter extends BaseAdapter {
+
+	private List<AshamedInfo> list;
+	private Context ctx;
+	private LoadImg loadImgHeadImg;
+	private LoadImg loadImgMainImg;
+	private boolean upFlag = false;
+	private boolean downFlag = false;
+
+	public MyListAdapter(Context ctx, List<AshamedInfo> list) {
+		this.list = list;
+		this.ctx = ctx;
+		// 实例化获取图片的类
+		loadImgHeadImg = new LoadImg(ctx);
+		loadImgMainImg = new LoadImg(ctx);
+	}
+
+	@Override
+	public int getCount() {
+		return list.size();
+	}
+
+	@Override
+	public Object getItem(int arg0) {
+		return list.get(arg0);
+	}
+
+	@Override
+	public long getItemId(int arg0) {
+		return arg0;
+	}
+
+	@Override
+	public View getView(final int arg0, View arg1, ViewGroup arg2) {
+		final Holder hold;
+		if (arg1 == null) {
+			hold = new Holder();
+			arg1 = View.inflate(ctx, R.layout.mylistview_item, null);
+			hold.UserHead = (ImageView) arg1.findViewById(R.id.Item_UserHead);
+			hold.UserName = (TextView) arg1.findViewById(R.id.Item_UserName);
+			hold.MainText = (TextView) arg1.findViewById(R.id.Item_MainText);
+			hold.MainImg = (ImageView) arg1.findViewById(R.id.Item_MainImg);
+			hold.Up = (LinearLayout) arg1.findViewById(R.id.Item_Up);
+			hold.Up_Img = (ImageView) arg1.findViewById(R.id.Item_Up_img);
+			hold.Up_text = (TextView) arg1.findViewById(R.id.Item_Up_text);
+			hold.Down = (LinearLayout) arg1.findViewById(R.id.Item_Down);
+			hold.Down_Img = (ImageView) arg1.findViewById(R.id.Item_Down_img);
+			hold.Down_text = (TextView) arg1.findViewById(R.id.Item_Down_text);
+			hold.ShareNum = (TextView) arg1.findViewById(R.id.Item_ShareNum);
+			hold.Share = (LinearLayout) arg1.findViewById(R.id.Item_Share);
+			hold.Share_Img = (ImageView) arg1.findViewById(R.id.Item_Share_img);
+			arg1.setTag(hold);
+		} else {
+			hold = (Holder) arg1.getTag();
+		}
+
+		hold.UserName.setText(list.get(arg0).getUname());
+		hold.MainText.setText(list.get(arg0).getQvalue());
+		hold.Up_text.setText(list.get(arg0).getQlike());
+		hold.Down_text.setText("-" + list.get(arg0).getQunlike());
+		hold.ShareNum.setText(list.get(arg0).getQshare());
+		// 点顶响应事件
+		hold.Up.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+				if (upFlag || downFlag) {// 判断是否评论过
+					if (!upFlag) {// 判断是否是点踩如果之前点击的是顶则不操作如果不是则更改
+						// 设置点击响应事件--更改文字+1并且更改down的图片及文字-1
+					}
+				} else {// 如果没评论过，那直接更改顶的图片及文字+1
+
+				}
+				// 只要被点击就改变文字颜色及图片
+			}
+		});
+		// 点踩响应事件
+		hold.Down.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+				if (upFlag || downFlag) {// 判断是否评论过
+					if (!downFlag) {// 判断是否是点踩如果之前点击的是顶则不操作如果不是则更改
+						// 设置点击响应事件--更改图片及文字并且更改down的属性
+					}
+				} else {// 如果没评论过，那直接更改顶的图片及文字
+
+				}
+				// 只要被点击就改变文字颜色及图片
+			}
+		});
+		// 点分享响应事件
+		hold.Share.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+
+			}
+		});
+		// 点头像响应事件
+		hold.UserHead.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+				// 点击头像之后 给这位用户发小纸条
+			}
+		});
+		// 点查看大图响应事件
+		hold.MainImg.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+
+			}
+		});
+
+		// 设置用户头像
+		hold.UserHead.setImageResource(R.drawable.default_users_avatar);
+		if (list.get(arg0).getQimg().equalsIgnoreCase("")) {
+			hold.UserHead.setImageResource(R.drawable.default_users_avatar);
+		} else {
+			hold.UserHead.setTag(Model.USERHEADURL + list.get(arg0).getUhead());
+			// 网络获取头像图片
+			Bitmap bitHead = loadImgHeadImg.loadImage(hold.UserHead,
+					Model.USERHEADURL + list.get(arg0).getUhead(),
+					new ImageDownloadCallBack() {
+						@Override
+						public void onImageDownload(ImageView imageView,
+								Bitmap bitmap) {
+							// 网络交互时回调进来防止错位
+							if (hold.UserHead.getTag().equals(
+									Model.USERHEADURL
+											+ list.get(arg0).getUhead())) {
+								// 设置网络下载回来图片显示
+								hold.UserHead.setImageBitmap(bitmap);
+							}
+						}
+					});
+			// 从本地获取的
+			if (bitHead != null) {
+				// 设置缓存图片显示
+				hold.UserHead.setImageBitmap(bitHead);
+			}
+		}
+		// 设置糗事图片
+		hold.MainImg.setImageResource(R.drawable.default_content_pic);
+		if (list.get(arg0).getQimg().equalsIgnoreCase("")) {
+			hold.MainImg.setVisibility(View.GONE);
+		} else {
+			hold.MainImg.setVisibility(View.VISIBLE);
+			hold.MainImg.setTag(Model.USERHEADURL + list.get(arg0).getQimg());
+			// 网络获取糗事图片
+			Bitmap bitMain = loadImgMainImg.loadImage(hold.MainImg,
+					Model.QIMGURL + list.get(arg0).getQimg(),
+					new ImageDownloadCallBack() {
+						@Override
+						public void onImageDownload(ImageView imageView,
+								Bitmap bitmap) {
+							// 网络交互时回调进来防止错位
+							if (hold.MainImg.getTag().equals(
+									Model.QIMGURL + list.get(arg0).getQimg())) {
+								// 设置网络下载回来图片显示
+								hold.MainImg.setImageBitmap(bitmap);
+							}
+						}
+					});
+			// 从本地获取的
+			if (bitMain != null) {
+				// 设置缓存图片显示
+				hold.MainImg.setImageBitmap(bitMain);
+			}
+		}
+
+		return arg1;
+	}
+
+	static class Holder {
+		ImageView UserHead;// 用户头像
+		TextView UserName;// 用户名
+		TextView MainText;// 糗事文字
+		ImageView MainImg;// 糗事图片
+		LinearLayout Up;// 点赞
+		ImageView Up_Img;// 赞图片
+		TextView Up_text;// 被赞次数
+		LinearLayout Down;// 点踩
+		ImageView Down_Img;// 踩图片
+		TextView Down_text;// 被踩次数
+		TextView ShareNum;// 被分享的次数
+		LinearLayout Share;// 点击分享
+		ImageView Share_Img;// 分享图片
+	}
+}

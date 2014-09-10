@@ -1,0 +1,85 @@
+package com.anjoyo.info;
+
+public class AshamedInfo {
+	private String qid;// 糗事ID
+	private String uid;// 用户ID
+	private String tid;// 类型ID
+	private String uname;// 用户名
+	private String uhead;// 用户头像
+	private String qvalue;// 糗事内容
+	private String qlike;// 喜欢
+	private String qunlike;// 不喜欢
+	private String qimg;// 糗图
+
+	public String getUname() {
+		return uname;
+	}
+
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
+
+	public String getUhead() {
+		return uhead;
+	}
+
+	public void setUhead(String uhead) {
+		this.uhead = uhead;
+	}
+
+	public String getQid() {
+		return qid;
+	}
+
+	public void setQid(String qid) {
+		this.qid = qid;
+	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public String getTid() {
+		return tid;
+	}
+
+	public void setTid(String tid) {
+		this.tid = tid;
+	}
+
+	public String getQvalue() {
+		return qvalue;
+	}
+
+	public void setQvalue(String qvalue) {
+		this.qvalue = qvalue;
+	}
+
+	public String getQlike() {
+		return qlike;
+	}
+
+	public void setQlike(String qlike) {
+		this.qlike = qlike;
+	}
+
+	public String getQunlike() {
+		return qunlike;
+	}
+
+	public void setQunlike(String qunlike) {
+		this.qunlike = qunlike;
+	}
+
+	public String getQimg() {
+		return qimg;
+	}
+
+	public void setQimg(String qimg) {
+		this.qimg = qimg;
+	}
+}

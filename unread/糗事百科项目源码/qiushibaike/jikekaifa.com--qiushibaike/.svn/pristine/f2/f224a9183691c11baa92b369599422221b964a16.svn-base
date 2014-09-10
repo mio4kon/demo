@@ -1,0 +1,179 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.anjoyo.fragment.HotFragment;
+import com.anjoyo.fragment.HotFragment.HotFragmentCallBack;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+
+public class MainActivity extends SlidingFragmentActivity implements
+		OnClickListener {
+
+	private View mLeftView;
+	// 第三方的抽屉菜单管理工具类
+	private SlidingMenu mSlidingMenu;
+	// 热门的碎片
+	private HotFragment mHotFragment;
+	// 定义fragment管理器:向界面增加修改删除fragment
+	private FragmentManager mFragmentManager;
+	// leftView里面的控件
+	private LinearLayout mLoginThisAPP;// 登录糗百按钮
+	private ImageView mSettingBtn;// 设置按钮
+	private RelativeLayout mLeftHot, mLeftNice, mLeftPicture, mLeftCross,
+			mLeftScrip, mLeftNear, mLeftCheck; // leftview中下面的按钮
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_main);
+		initView();
+	}
+
+	private void initView() {
+		// 得到软件框架左侧显示的菜单view
+		mLeftView = View.inflate(MainActivity.this, R.layout.leftview, null);
+		// 控件查找监听
+		mLoginThisAPP = (LinearLayout) mLeftView
+				.findViewById(R.id.LoginThisAPP);
+		mSettingBtn = (ImageView) mLeftView.findViewById(R.id.SettingBtn);
+		mLeftHot = (RelativeLayout) mLeftView.findViewById(R.id.LeftHot);
+		mLeftNice = (RelativeLayout) mLeftView.findViewById(R.id.LeftNice);
+		mLeftPicture = (RelativeLayout) mLeftView
+				.findViewById(R.id.LeftPicture);
+		mLeftScrip = (RelativeLayout) mLeftView.findViewById(R.id.LeftScrip);
+		mLeftNear = (RelativeLayout) mLeftView.findViewById(R.id.LeftNear);
+		mLeftCross = (RelativeLayout) mLeftView.findViewById(R.id.LeftCross);
+		mLeftCheck = (RelativeLayout) mLeftView.findViewById(R.id.LeftCheck);
+
+		mLoginThisAPP.setOnClickListener(MainActivity.this);
+		mSettingBtn.setOnClickListener(MainActivity.this);
+		mLeftHot.setOnClickListener(MainActivity.this);
+		mLeftNice.setOnClickListener(MainActivity.this);
+		mLeftPicture.setOnClickListener(MainActivity.this);
+		mLeftScrip.setOnClickListener(MainActivity.this);
+		mLeftNear.setOnClickListener(MainActivity.this);
+		mLeftCross.setOnClickListener(MainActivity.this);
+		mLeftCheck.setOnClickListener(MainActivity.this);
+		// 设置默认选中第一项
+		mLeftHot.setBackgroundResource(R.drawable.side_menu_background_active);
+
+		// 界面功能
+		mHotFragment = new HotFragment();
+		// 实例化我们的抽屉管理类
+		mSlidingMenu = this.getSlidingMenu();
+		// 设置在slidingmenu框架里面，左侧显示的view
+		this.setBehindContentView(mLeftView);
+		mSlidingMenu.setShadowDrawable(R.drawable.drawer_shadow);// 设置阴影图片
+		mSlidingMenu.setShadowWidthRes(R.dimen.shadow_width); // 设置阴影图片的宽度
+		mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset); // SlidingMenu划出时主页面显示的剩余宽度
+		mSlidingMenu.setFadeDegree(0.35f);// 设置淡入淡出
+		// 设置SlidingMenu 的手势模式
+		// TOUCHMODE_FULLSCREEN 全屏模式，在整个content页面中，滑动，可以打开SlidingMenu
+		// TOUCHMODE_MARGIN
+		// 边缘模式，在content页面中，如果想打开SlidingMenu,你需要在屏幕边缘滑动才可以打开SlidingMenu
+		// TOUCHMODE_NONE 不能通过手势打开SlidingMenu
+		mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		fragmentCallBack();
+		mFragmentManager = MainActivity.this.getSupportFragmentManager();
+		// 获取fragment栈
+		FragmentTransaction mFragmentTransaction = mFragmentManager
+				.beginTransaction();
+
+		mFragmentTransaction.replace(R.id.main, mHotFragment);
+		// 提交保存杠杆替换或者添加的fragment
+		mFragmentTransaction.commit();
+	}
+
+	@Override
+	public void onClick(View v) {
+		int mID = v.getId();
+		MainActivity.this.toggle();
+		switch (mID) {
+		case R.id.LoginThisAPP:// 登录糗百
+			break;
+		case R.id.SettingBtn:// 设置
+			break;
+		case R.id.LeftHot:// 热门
+			createleftviewbg();
+			mLeftHot.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftNice:// 精华
+			createleftviewbg();
+			mLeftNice
+					.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftPicture:// 有图有真相
+			createleftviewbg();
+			mLeftPicture
+					.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftScrip:// 穿越
+			createleftviewbg();
+			mLeftScrip
+					.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftNear:// 小纸条
+			createleftviewbg();
+			mLeftNear
+					.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftCross:// 附近
+			createleftviewbg();
+			mLeftCross
+					.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftCheck:// 审核糗事
+			createleftviewbg();
+			mLeftCheck
+					.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		default:
+			break;
+		}
+	}
+
+	// 从fragment里面回调回来的事件监听设置方法
+	private void fragmentCallBack() {
+		mHotFragment.setCallBack(new MyHotFragmentCallBack());
+	}
+
+	// 实现hotfragment里面接口的子类
+	private class MyHotFragmentCallBack implements HotFragmentCallBack {
+
+		@Override
+		public void callback(int flag) {
+
+			switch (flag) {
+			case R.id.Menu:// 用户点击hotfragment上面的导航按钮
+				// 设置开启或关闭抽屉
+				MainActivity.this.toggle();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	// 设置leftview控件的默认背景色
+	private void createleftviewbg() {
+		mLeftHot.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftNice.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftPicture.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftScrip.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftNear.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftCross.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftCheck.setBackgroundResource(R.drawable.leftview_list_bg);
+	}
+
+}

@@ -1,0 +1,26 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+
+public class LoginActivity extends Activity {
+	
+	private Button mClose, mLogin;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		initView();
+	}
+
+	private void initView() {
+		mClose = (Button) findViewById(R.id.loginClose);
+		mLogin = (Button) findViewById(R.id.login);
+		
+	}
+	
+}

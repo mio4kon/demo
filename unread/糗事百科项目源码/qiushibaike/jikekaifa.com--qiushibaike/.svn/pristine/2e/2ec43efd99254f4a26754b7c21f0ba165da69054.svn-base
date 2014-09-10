@@ -1,0 +1,30 @@
+package com.anjoyo.model;
+
+public class Model {
+
+	// �����������ַ---------------------------------------------------------------------------
+	public static String HTTPURL = "http://534429149.haoqie.net/qiubai/";
+	// �����ȡ�ɻ��б��ַ
+	public static String GANHUO = "ganhuo.php?";
+	// �����ȡ�ɻ��б��ַ
+	public static String NENCAO = "nencao.php?";
+	// �����ȡ�ɻ��б��ַ
+	public static String WENZI = "wenzi.php?";
+	// �����û�ͷ���ַ
+	public static String ADDVALUE = "addvalue.php";
+	public static String USERHEADURL = "http://534429149.haoqie.net/qiubai/Userimg/";
+	// ��������ͼƬ��ַ
+	public static String QIMGURL = "http://534429149.haoqie.net/qiubai/Valueimg/";
+	// ���ط�������ַ---------------------------------------------------------------------------
+	public static String HTTPURL2 = "http://192.168.1.107/qiubai/";
+	// ���ػ�ȡ�ɻ��б��ַ
+	public static String GANHUO2 = "ganhuo.php?";
+	// ���ػ�ȡ�ɻ��б��ַ
+	public static String NENCAO2 = "nencao.php?";
+	// ���ػ�ȡ�ɻ��б��ַ
+	public static String WENZI2 = "wenzi.php?";
+	// �����û�ͷ���ַ
+	public static String USERHEADURL2 = "http://192.168.1.107/qiubai/Userimg/";
+	// ��������ͼƬ��ַ
+	public static String QIMGUR2L = "http://192.168.1.107/qiubai/Valueimg/";
+}

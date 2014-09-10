@@ -1,0 +1,94 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+public class UserInfoActivity extends Activity {
+	private ImageView mBack, mUserRevise, mUserMore, mUserCamera;
+	private TextView mBrief, mQiushi;
+	private LinearLayout mUserBrief;
+	private RelativeLayout mUserQiushi;
+	private Boolean flag = true;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_userinfo);
+		initView();
+
+	}
+
+	private void initView() {
+		// TODO Auto-generated method stub
+		mBrief = (TextView) findViewById(R.id.Brief);
+		mQiushi = (TextView) findViewById(R.id.Qiushi);
+		mUserBrief = (LinearLayout) findViewById(R.id.UserBrief);
+		mUserQiushi = (RelativeLayout) findViewById(R.id.UserQiushi);
+		mBack = (ImageView) findViewById(R.id.UserBack);
+		mUserRevise = (ImageView) findViewById(R.id.UserRevise);
+		mUserCamera = (ImageView) findViewById(R.id.UserCamera);
+		MyOnClick my = new MyOnClick();
+		mBrief.setOnClickListener(my);
+		mQiushi.setOnClickListener(my);
+		mUserRevise.setOnClickListener(my);
+		mBack.setOnClickListener(my);
+		mUserCamera.setOnClickListener(my);
+
+	}
+
+	class MyOnClick implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			int mId = v.getId();
+			switch (mId) {
+			case R.id.Brief:
+				flag = true;
+				initCont(flag);
+				break;
+			case R.id.Qiushi:
+				flag = false;
+				initCont(flag);
+				break;
+			case R.id.UserBack:
+				finish();
+				break;
+			case R.id.UserRevise:
+				// Intent intent = new Intent(UserInfoActivity.this,.class);
+				// startActivity(intent);
+				break;
+			case R.id.UserCamera:
+				// Intent intent = new Intent(UserInfoActivity.this,.class);
+				// startActivity(intent);
+				break;
+			}
+
+		}
+
+	}
+
+	private void initCont(Boolean flag) {
+		if (flag) {
+			mBrief.setBackgroundResource(R.drawable.cab_background_top_light);
+			mQiushi.setBackgroundResource(R.drawable.ab_stacked_solid_light);
+			mUserBrief.setVisibility(View.VISIBLE);
+			mUserQiushi.setVisibility(View.GONE);
+		} else {
+			mBrief.setBackgroundResource(R.drawable.ab_stacked_solid_light);
+			mQiushi.setBackgroundResource(R.drawable.cab_background_top_light);
+			mUserBrief.setVisibility(View.GONE);
+			mUserQiushi.setVisibility(View.VISIBLE);
+		}
+	}
+}

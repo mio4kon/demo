@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Activity_xiaozhitiao"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ECE4D7"
+    android:orientation="vertical"  >
+        <RelativeLayout
+        android:id="@+id/loginTop_xiaozhitiao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/top_bar_bg"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/xiaozhitiao_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/side_icon" />
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:text="小纸条Beta"
+            android:textColor="#ffffff"
+            android:textSize="25dp" />
+    </RelativeLayout>
+
+        <ListView
+            android:id="@+id/xiaozhitiao_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </ListView>
+
+</LinearLayout>

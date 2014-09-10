@@ -1,0 +1,40 @@
+package com.anjoyo.model;
+
+public class Model {
+
+	// �����������ַ---------------------------------------------------------------------------
+	public static String HTTPURL = "http://534429149.haoqie.net/qiubai/";
+	public static String GANHUO = "ganhuo.php?";
+	public static String NENCAO = "nencao.php?";
+	public static String WENZI = "wenzi.php?";
+	public static String REGISTET = "zhuce.php?";
+	// �����û�ͷ���ַ
+	// �����ȡ���б�ӿ�
+	public static String RI = "ri.php?";
+	// �����ȡ���б�ӿ�
+	public static String ZHOU = "zhou.php?";
+	// �����ȡ���б�ӿ�
+	public static String YUE = "yue.php?";
+	// �����ȡӲ���б�ӿ�
+	public static String YINGCAI = "yingcai.php?";
+	// �����ȡʱ���б�ӿ�
+	public static String SHILING = "shiling.php?";
+	// �����ȡ��Խ�б�ӿ�
+	public static String CHUANYUE = "chuanyue.php?";
+	// �����ȡĳһ�����б�Ľӿ�
+	public static String COMMENTS = "comments.php?";
+	public static String ADDVALUE = "addvalue.php";
+	public static String USERHEADURL = "http://534429149.haoqie.net/qiubai/Userimg/";
+	// ��������ͼƬ��ַ
+	public static String QIMGURL = "http://534429149.haoqie.net/qiubai/Valueimg/";
+	// �ύ�������۵Ľӿ�
+	public static String ADDCOMMENT = "addcomment.php";
+	public static String HTTPURL2 = "http://192.168.1.107/qiubai/";
+	public static String GANHUO2 = "ganhuo.php?";
+	public static String NENCAO2 = "nencao.php?";
+	public static String WENZI2 = "wenzi.php?";
+	public static String COMMENTS2 = "comments.php?";
+	public static String USERHEADURL2 = "http://192.168.1.107/qiubai/Userimg/";
+	// ��������ͼƬ��ַ
+	public static String QIMGUR2L = "http://192.168.1.107/qiubai/Valueimg/";
+}

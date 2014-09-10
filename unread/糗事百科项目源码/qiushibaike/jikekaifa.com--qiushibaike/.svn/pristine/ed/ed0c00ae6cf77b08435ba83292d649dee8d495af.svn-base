@@ -1,0 +1,70 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+public class RegistetActivity extends Activity{
+	private ImageView mClose;
+	private EditText mName,mPassword;
+	private RelativeLayout mNext;
+	private TextView mStartlogin;
+	
+	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_register);
+		initView();
+	}
+	private void initView() {
+		mClose = (ImageView) findViewById(R.id.registClose);
+		mName = (EditText) findViewById(R.id.Redit_name);
+		mPassword = (EditText) findViewById(R.id.Redit_password);
+		mNext = (RelativeLayout) findViewById(R.id.next);
+		mStartlogin = (TextView) findViewById(R.id.startlogin);
+		MyOnClickListener my = new MyOnClickListener();
+		mClose.setOnClickListener(my);
+		mNext.setOnClickListener(my);
+		mStartlogin.setOnClickListener(my);
+		
+		
+
+	}
+	class MyOnClickListener implements View.OnClickListener{
+
+		@Override
+		public void onClick(View v) {
+		 int mId = v.getId();
+		 switch(mId){
+		 case R.id.registClose:
+			 finish();
+			 break;
+		 case R.id.next:
+			 if(mName.getText().toString() != null && 
+			 	mPassword.getText().toString() !=null){
+				 Intent intent = new Intent();
+					intent.putExtra("NameValue",mName.getText().toString());
+					intent.putExtra("PasswordValue",mPassword .getText().toString());
+					setResult(2, intent);
+					finish();
+			 }
+			 break;
+		 case R.id.startlogin:
+			 Intent intent = new Intent(RegistetActivity.this,LoginActivity.class);
+			 startActivity(intent);
+		 }
+			
+		}
+		
+	}
+
+}

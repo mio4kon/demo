@@ -1,0 +1,44 @@
+package com.anjoyo.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.anjoyo.info.AshamedInfo;
+
+/**
+ * Json字符串解析工具类
+ * 
+ * @author 苦涩
+ */
+
+public class MyJson {
+	// 解析糗事方法
+	public List<AshamedInfo> getAshamedList(String value) {
+		List<AshamedInfo> list = null;
+		try {
+			JSONArray jay = new JSONArray(value);
+			list = new ArrayList<AshamedInfo>();
+			for (int i = 0; i < jay.length(); i++) {
+				JSONObject job = jay.getJSONObject(i);
+				AshamedInfo info = new AshamedInfo();
+				info.setQid(job.getString("QID"));
+				info.setUid(job.getString("UID"));
+				info.setTid(job.getString("TID"));
+				info.setQimg(job.getString("QIMG"));
+				info.setQvalue(job.getString("QVALUE"));
+				info.setQlike(job.getString("QLIKE"));
+				info.setQunlike(job.getString("QUNLIKE"));
+				info.setUname(job.getString("UNAME"));
+				info.setUhead(job.getString("UHEAD"));
+				list.add(info);
+			}
+		} catch (JSONException e) {
+		}
+		return list;
+	}
+
+}

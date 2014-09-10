@@ -1,0 +1,182 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.anjoyo.fragment.HotFragment;
+import com.anjoyo.fragment.HotFragment.HotFragmentCallBack;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+
+public class MainActivity extends SlidingFragmentActivity implements
+OnClickListener {
+
+	private View mLeftView;
+	// ����ĳ���˵����?����
+	private SlidingMenu mSlidingMenu;
+	// ���ŵ���Ƭ
+	private HotFragment mHotFragment;
+	// ����fragment������:����������޸�ɾ��fragment
+	private FragmentManager mFragmentManager;
+	// leftView����Ŀؼ�
+	private LinearLayout mLoginThisAPP;// ��¼�ٰܰ�ť
+	private ImageView mSettingBtn;// ���ð�ť
+	private RelativeLayout mLeftHot, mLeftNice, mLeftPicture, mLeftCross,
+	mLeftScrip, mLeftNear, mLeftCheck; // leftview������İ�ť
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_main);
+		initView();
+	}
+
+	private void initView() {
+		// �õ������������ʾ�Ĳ˵�view
+		mLeftView = View.inflate(MainActivity.this, R.layout.leftview, null);
+		// �ؼ����Ҽ���
+		mLoginThisAPP = (LinearLayout) mLeftView
+				.findViewById(R.id.LoginThisAPP);
+		mSettingBtn = (ImageView) mLeftView.findViewById(R.id.SettingBtn);
+		mLeftHot = (RelativeLayout) mLeftView.findViewById(R.id.LeftHot);
+		mLeftNice = (RelativeLayout) mLeftView.findViewById(R.id.LeftNice);
+		mLeftPicture = (RelativeLayout) mLeftView
+				.findViewById(R.id.LeftPicture);
+		mLeftScrip = (RelativeLayout) mLeftView.findViewById(R.id.LeftScrip);
+		mLeftNear = (RelativeLayout) mLeftView.findViewById(R.id.LeftNear);
+		mLeftCross = (RelativeLayout) mLeftView.findViewById(R.id.LeftCross);
+		mLeftCheck = (RelativeLayout) mLeftView.findViewById(R.id.LeftCheck);
+
+		mLoginThisAPP.setOnClickListener(MainActivity.this);
+		mSettingBtn.setOnClickListener(MainActivity.this);
+		mLeftHot.setOnClickListener(MainActivity.this);
+		mLeftNice.setOnClickListener(MainActivity.this);
+		mLeftPicture.setOnClickListener(MainActivity.this);
+		mLeftScrip.setOnClickListener(MainActivity.this);
+		mLeftNear.setOnClickListener(MainActivity.this);
+		mLeftCross.setOnClickListener(MainActivity.this);
+		mLeftCheck.setOnClickListener(MainActivity.this);
+		// ����Ĭ��ѡ�е�һ��
+		mLeftHot.setBackgroundResource(R.drawable.side_menu_background_active);
+
+		// ���湦��
+		mHotFragment = new HotFragment();
+		// ʵ�����ǵĳ��������
+		mSlidingMenu = this.getSlidingMenu();
+		// ������slidingmenu������棬�����ʾ��view
+		this.setBehindContentView(mLeftView);
+		mSlidingMenu.setShadowDrawable(R.drawable.drawer_shadow);// ������ӰͼƬ
+		mSlidingMenu.setShadowWidthRes(R.dimen.shadow_width); // ������ӰͼƬ�Ŀ��
+		mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset); // SlidingMenu����ʱ��ҳ����ʾ��ʣ����
+		mSlidingMenu.setFadeDegree(0.35f);// ���õ��뵭��
+		// ����SlidingMenu ������ģʽ
+		// TOUCHMODE_FULLSCREEN ȫ��ģʽ�������contentҳ���У����������Դ�SlidingMenu
+		// TOUCHMODE_MARGIN
+		// ��Եģʽ����contentҳ���У�������SlidingMenu,����Ҫ����Ļ��Ե�����ſ��Դ�SlidingMenu
+		// TOUCHMODE_NONE ����ͨ�����ƴ�SlidingMenu
+		mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		fragmentCallBack();
+		mFragmentManager = MainActivity.this.getSupportFragmentManager();
+		// ��ȡfragmentջ
+		FragmentTransaction mFragmentTransaction = mFragmentManager
+				.beginTransaction();
+
+		mFragmentTransaction.replace(R.id.main, mHotFragment);
+		// �ύ����ܸ��滻������ӵ�fragment
+		mFragmentTransaction.commit();
+	}
+
+	@Override
+	public void onClick(View v) {
+		int mID = v.getId();
+		MainActivity.this.toggle();
+		switch (mID) {
+		case R.id.LoginThisAPP:// ��¼�ܰ�
+			break;
+		case R.id.SettingBtn:// ����
+			break;
+		case R.id.LeftHot:// ����
+			createleftviewbg();
+			mLeftHot.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftNice:// ����
+			createleftviewbg();
+			mLeftNice
+			.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftPicture:// ��ͼ������
+			createleftviewbg();
+			mLeftPicture
+			.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftScrip:// ��Խ
+			createleftviewbg();
+			mLeftScrip
+			.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftNear:// Сֽ��
+			createleftviewbg();
+			mLeftNear
+			.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftCross:// ����
+			createleftviewbg();
+			mLeftCross
+			.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		case R.id.LeftCheck:// �������
+			createleftviewbg();
+			mLeftCheck
+			.setBackgroundResource(R.drawable.side_menu_background_active);
+			break;
+		default:
+			break;
+		}
+	}
+
+	// ��fragment����ص��������¼��������÷���
+	private void fragmentCallBack() {
+		mHotFragment.setCallBack(new MyHotFragmentCallBack());
+	}
+
+	// ʵ��hotfragment����ӿڵ�����
+	private class MyHotFragmentCallBack implements HotFragmentCallBack {
+
+		@Override
+		public void callback(int flag) {
+
+			switch (flag) {
+			case R.id.Menu:// �û����hotfragment����ĵ�����ť
+				// ���ÿ�����رճ���
+				MainActivity.this.toggle();
+				break;
+			case R.id.SendAshamed:
+				Intent intent = new Intent(MainActivity.this,UploadActivity.class); 
+				startActivity(intent);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	// ����leftview�ؼ���Ĭ�ϱ���ɫ
+	private void createleftviewbg() {
+		mLeftHot.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftNice.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftPicture.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftScrip.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftNear.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftCross.setBackgroundResource(R.drawable.leftview_list_bg);
+		mLeftCheck.setBackgroundResource(R.drawable.leftview_list_bg);
+	}
+
+}

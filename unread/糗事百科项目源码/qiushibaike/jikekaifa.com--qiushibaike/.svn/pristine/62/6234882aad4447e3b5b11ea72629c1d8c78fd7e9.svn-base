@@ -1,0 +1,54 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+public class UploadActivity extends Activity{
+	
+	private ImageView mClose,mUpLoadEdit,mCamera,mAlbum;
+	private EditText mNeirongEdit;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_upload);
+		initView();
+	}
+	private void initView(){
+		//获取关闭按钮id
+		mClose= (ImageView) findViewById(R.id.close);
+		MyOnclickListener mOnclickListener = new MyOnclickListener();
+		//发表按钮
+		mUpLoadEdit=(ImageView) findViewById(R.id.UpLoadEdit);
+		//相机按钮
+		mCamera=(ImageView) findViewById(R.id.camera);
+		//图片按钮
+		mAlbum=(ImageView) findViewById(R.id.album);
+		mNeirongEdit=(EditText) findViewById(R.id.neirongEdit);
+		mClose.setOnClickListener(mOnclickListener);
+		mUpLoadEdit.setOnClickListener(mOnclickListener);
+	}
+	private class MyOnclickListener implements View.OnClickListener{
+
+		@Override
+		public void onClick(View v) {
+			int ID=v.getId();
+			switch (ID) {
+			case R.id.close:
+				Intent intent1 = new Intent(UploadActivity.this,
+						MainActivity.class);
+				UploadActivity.this.startActivity(intent1);
+				break;
+			case R.id.UpLoadEdit:
+				Intent intent2 = new Intent(UploadActivity.this,
+						MainActivity.class);
+			}
+
+		}
+		
+	}
+}

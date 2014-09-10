@@ -1,0 +1,44 @@
+package com.anjoyo.thread;
+
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import com.anjoyo.net.MyPost;
+
+/**
+ * ����Post������߳�
+ * */
+
+public class HttpPostThread implements Runnable{
+
+	private Handler hand;
+	private String url;
+	private String value;
+	private String img;
+	private MyPost myGet = new MyPost();
+	public HttpPostThread(Handler hand,String endParamerse,String value,String img){
+		this.hand = hand;
+		//ƴ�ӷ��ʷ���������ĵ�ַ
+		url = endParamerse;
+		this.value = value;
+		this.img = img;
+	}
+
+	@Override
+	public void run() {
+		//��ȡ���ǻص���ui��message
+		Message msg = hand.obtainMessage();
+		String result = myGet.doPost(url,img, value);
+		msg.what = 200;
+		msg.obj = result;
+		//����ui������Ϣ�������
+		hand.sendMessage(msg);
+
+	}
+
+}

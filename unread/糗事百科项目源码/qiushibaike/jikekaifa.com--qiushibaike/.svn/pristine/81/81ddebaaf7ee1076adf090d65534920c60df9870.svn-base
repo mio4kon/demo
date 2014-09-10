@@ -1,0 +1,219 @@
+package com.anjoyo.fragment;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.anjoyo.anjoyoqiushibaike.R;
+import com.anjoyo.myview.MyListView;
+import com.anjoyo.myview.MyListView.OnRefreshListener;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
+
+/**
+ * 热门的fragment
+ * */
+public class HotFragment extends Fragment implements OnClickListener {
+
+	private View view;
+	private ImageView mTopImg;
+	private ImageView mSendAshamed;
+	private TextView mTopMenuOne, mTopMenuTwo, mTopMenuThree;
+	private MyListView myListView;
+	private LinearLayout mLinearLayout;
+	// 回调接口类型的变量,用来接收activity传递进来的接口子类的实例
+	private HotFragmentCallBack mHotFragmentCallBack;
+
+	private List list = new ArrayList();//后期删除
+	private MyAdapter my;//后期删除
+	Context ctx;
+	
+	// 创建view方法
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.frame_home, null);
+		ctx = view.getContext();
+		myListView = new MyListView(ctx);
+		initDB();//后期删除
+		initView();
+		return view;
+	}
+
+	private void initView() {
+		mLinearLayout = (LinearLayout) view.findViewById(R.id.HomeGroup);
+		myListView.setLayoutParams(new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT));
+		mLinearLayout.addView(myListView);
+		mTopImg = (ImageView) view.findViewById(R.id.Menu);
+		mSendAshamed = (ImageView) view.findViewById(R.id.SendAshamed);
+		mTopMenuOne = (TextView) view.findViewById(R.id.TopMenuOne);
+		mTopMenuTwo = (TextView) view.findViewById(R.id.TopMenuTwo);
+		mTopMenuThree = (TextView) view.findViewById(R.id.TopMenuThree);
+		mTopImg.setOnClickListener(this);
+		mSendAshamed.setOnClickListener(this);
+		mTopMenuOne.setOnClickListener(this);
+		mTopMenuTwo.setOnClickListener(this);
+		mTopMenuThree.setOnClickListener(this);
+		//以下之后删除
+		my = new MyAdapter();
+		myListView.setAdapter(my);
+		//释放刷新进入
+				myListView.setonRefreshListener(new OnRefreshListener() {
+
+					@Override
+					public void onRefresh() {
+
+						new Thread(){
+
+							public void run(){
+								try {
+									Thread.sleep(2000);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								Message msg = hand.obtainMessage();
+								hand.sendMessage(msg);
+							}
+
+						}.start();
+					}
+				});
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		int mID = arg0.getId();
+		switch (mID) {
+		case R.id.Menu:
+			// 把我们在fragment的xml当中的控件id回传回去
+			mHotFragmentCallBack.callback(R.id.Menu);
+			break;
+		case R.id.SendAshamed:
+			// 发糗事被点击响应事件
+			break;
+		case R.id.TopMenuOne:
+			// 糗事界面topmenuone被点击
+			createTextColor();
+			mTopMenuOne.setTextColor(Color.WHITE);
+			mTopMenuOne.setBackgroundResource(R.drawable.top_tab_active);
+			break;
+		case R.id.TopMenuTwo:
+			// 糗事界面topmenutwo被点击
+			createTextColor();
+			mTopMenuTwo.setTextColor(Color.WHITE);
+			mTopMenuTwo.setBackgroundResource(R.drawable.top_tab_active);
+			break;
+		case R.id.TopMenuThree:
+			// 糗事界面topmenuthree被点击
+			createTextColor();
+			mTopMenuThree.setTextColor(Color.WHITE);
+			mTopMenuThree.setBackgroundResource(R.drawable.top_tab_active);
+			break;
+		default:
+			break;
+		}
+	}
+
+	// 初始化top——tabhost背景和颜色
+	@SuppressWarnings("deprecation")
+	private void createTextColor() {
+		Drawable background = new BitmapDrawable();
+		mTopMenuOne.setTextColor(Color.parseColor("#815F3D"));
+		mTopMenuTwo.setTextColor(Color.parseColor("#815F3D"));
+		mTopMenuThree.setTextColor(Color.parseColor("#815F3D"));
+		mTopMenuOne.setBackgroundDrawable(background);
+		mTopMenuTwo.setBackgroundDrawable(background);
+		mTopMenuThree.setBackgroundDrawable(background);
+
+	}
+
+	// 接收activity传递过来的接口子类对象
+	public void setCallBack(HotFragmentCallBack mHotFragmentCallBack) {
+		this.mHotFragmentCallBack = mHotFragmentCallBack;
+	}
+
+	public interface HotFragmentCallBack {
+		// flag activity当中区分在fragment里面到底点击的哪里
+		public void callback(int flag);
+	}
+	
+	
+	//以下方法后期删除
+	Handler hand = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			super.handleMessage(msg);
+			//listview回位
+			myListView.onRefreshComplete();
+			list.add(0,"-1");
+			list.add("100");
+			my.notifyDataSetChanged();
+		};
+	};
+
+	private class MyAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return list.size();
+		}
+
+		@Override
+		public Object getItem(int arg0) {
+			// TODO Auto-generated method stub
+			return list.get(arg0);
+		}
+
+		@Override
+		public long getItemId(int arg0) {
+			// TODO Auto-generated method stub
+			return arg0;
+		}
+
+		@Override
+		public View getView(int arg0, View arg1, ViewGroup arg2) {
+			Holder hold;
+			if(arg1 == null){
+				hold = new Holder();
+				arg1 = View.inflate(ctx,R.layout.mylistview_item,null);
+				hold.t = (TextView) arg1.findViewById(R.id.Item_UserName);
+				arg1.setTag(hold);
+			}else{
+				hold = (Holder) arg1.getTag();
+			}
+
+			hold.t.setText((String)list.get(arg0));
+			return arg1;
+		}
+	}
+
+	static class Holder{
+		TextView t;
+	}
+
+	
+	private void initDB(){
+		for(int i = 0;i < 100;i ++){
+			list.add("itemt:"+i);
+		}
+	}
+}

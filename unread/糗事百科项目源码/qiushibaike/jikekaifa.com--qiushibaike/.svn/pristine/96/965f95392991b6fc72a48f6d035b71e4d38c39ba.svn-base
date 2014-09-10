@@ -1,0 +1,43 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+
+public class UserInfoActivity extends Activity{
+	private ImageView mClose,mRevise;
+	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_userinfo);
+		initView();
+	}
+	private void initView() {
+		mClose = (ImageView) findViewById(R.id.UserBack);
+		mRevise = (ImageView) findViewById(R.id.UserRevise);
+		MyOnClickListener my = new MyOnClickListener();
+		mClose.setOnClickListener(my);
+		mRevise.setOnClickListener(my);
+
+	}
+	class MyOnClickListener implements View.OnClickListener{
+
+		@Override
+		public void onClick(View v) {
+			int mId = v.getId();
+			if(mId == R.id.UserBack){
+				finish();
+			}
+			if(mId == R.id.UserRevise){
+				
+			}
+			
+		}
+		
+	}
+
+}

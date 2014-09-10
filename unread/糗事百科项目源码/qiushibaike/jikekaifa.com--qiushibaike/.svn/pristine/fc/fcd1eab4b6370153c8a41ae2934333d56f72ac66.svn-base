@@ -1,0 +1,44 @@
+package com.anjoyo.anjoyoqiushibaike;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+public class UploadActivity extends Activity{
+	
+	private ImageView mClose,mUpLoadEdit,mCamera,mAlbum;
+	private EditText mNeirongEdit;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_upload);
+		initView();
+	}
+	private void initView(){
+		mClose= (ImageView) findViewById(R.id.close);
+		mClose.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				UploadActivity.this.finish();
+			}
+		});
+		mUpLoadEdit=(ImageView) findViewById(R.id.UpLoadEdit);
+		mUpLoadEdit.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(UploadActivity.this, "发表糗事按钮被点击", 1).show();
+			}
+		});
+		
+		mCamera=(ImageView) findViewById(R.id.camera);
+		mAlbum=(ImageView) findViewById(R.id.album);
+		mNeirongEdit=(EditText) findViewById(R.id.neirongEdit);
+		
+	}
+}

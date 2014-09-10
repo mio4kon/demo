@@ -1,0 +1,29 @@
+package com.anjoyo.model;
+
+public class Model {
+
+	// 网络服务器地址---------------------------------------------------------------------------
+	public static String HTTPURL = "http://534429149.haoqie.net/qiubai/";
+	// 网络获取干货列表地址
+	public static String GANHUO = "ganhuo.php?";
+	// 网络获取干货列表地址
+	public static String NENCAO = "nencao.php?";
+	// 网络获取干货列表地址
+	public static String WENZI = "wenzi.php?";
+	// 网络用户头像地址
+	public static String USERHEADURL = "http://534429149.haoqie.net/qiubai/Userimg/";
+	// 网络糗事图片地址
+	public static String QIMGURL = "http://534429149.haoqie.net/qiubai/Valueimg/";
+	// 本地服务器地址---------------------------------------------------------------------------
+	public static String HTTPURL2 = "http://192.168.1.107/qiubai/";
+	// 本地获取干货列表地址
+	public static String GANHUO2 = "ganhuo.php?";
+	// 本地获取干货列表地址
+	public static String NENCAO2 = "nencao.php?";
+	// 本地获取干货列表地址
+	public static String WENZI2 = "wenzi.php?";
+	// 本地用户头像地址
+	public static String USERHEADURL2 = "http://192.168.1.107/qiubai/Userimg/";
+	// 本地糗事图片地址
+	public static String QIMGUR2L = "http://192.168.1.107/qiubai/Valueimg/";
+}
